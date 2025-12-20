@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.smvdu.mess.controllers.LoginController"
+           styleClass="login-background">
+    
+    <VBox fx:id="loginBox" alignment="CENTER" spacing="20" maxWidth="420" styleClass="login-card">
+        <padding><Insets top="50" right="40" bottom="50" left="40"/></padding>
+        
+        <!-- Logo/Title -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="🏛️" style="-fx-font-size: 48px;"/>
+            <Label text="SMVDU" styleClass="title-text"/>
+            <Label text="Mess Billing System" styleClass="subtitle-text"/>
+        </VBox>
+        
+        <!-- Login Form -->
+        <VBox spacing="15" alignment="CENTER">
+            <VBox spacing="5">
+                <Label text="Email" styleClass="field-label"/>
+                <TextField fx:id="emailField" promptText="Enter your email" styleClass="input-field"/>
+            </VBox>
+            
+            <VBox spacing="5">
+                <Label text="Password" styleClass="field-label"/>
+                <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="input-field"/>
+            </VBox>
+            
+            <Label fx:id="errorLabel" styleClass="error-label"/>
+            
+            <Button fx:id="loginButton" text="Login" onAction="#handleLogin" 
+                    styleClass="primary-button" maxWidth="Infinity"/>
+        </VBox>
+        
+        <!-- Footer -->
+        <Label text="© 2024 SMVDU. All rights reserved." styleClass="footer-text"/>
+    </VBox>
+</StackPane>

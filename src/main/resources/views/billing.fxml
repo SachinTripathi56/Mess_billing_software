@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smvdu.mess.controllers.BillingController"
+            styleClass="page-bg">
+    
+    <top>
+        <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+            <padding><Insets top="15" right="30" bottom="15" left="30"/></padding>
+            
+            <Button text="← Back" onAction="#goBack" styleClass="back-button"/>
+            <Label text="Generate Bill" styleClass="page-title"/>
+            <Label fx:id="hostelNameLabel" styleClass="header-subtitle"/>
+        </HBox>
+    </top>
+    
+    <center>
+        <HBox spacing="40" alignment="TOP_CENTER">
+            <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
+            
+            <!-- Settings Panel -->
+            <VBox spacing="20" styleClass="settings-panel" minWidth="300">
+                <Label text="Bill Settings" styleClass="section-title"/>
+                
+                <VBox spacing="8">
+                    <Label text="Select Month"/>
+                    <ComboBox fx:id="monthCombo" maxWidth="Infinity"/>
+                </VBox>
+                
+                <VBox spacing="8">
+                    <Label text="Select Year"/>
+                    <ComboBox fx:id="yearCombo" maxWidth="Infinity"/>
+                </VBox>
+                
+                <Separator/>
+                
+                <VBox spacing="8">
+                    <Label text="Per Day Rate (₹)"/>
+                    <TextField fx:id="rateField" promptText="120"/>
+                </VBox>
+                
+                <VBox spacing="8">
+                    <Label text="GST Percentage (%)"/>
+                    <TextField fx:id="gstField" promptText="5"/>
+                </VBox>
+                
+                <Button text="Generate Bill" onAction="#generateBill" 
+                        styleClass="primary-button" maxWidth="Infinity"/>
+            </VBox>
+            
+            <!-- Bill Preview -->
+            <VBox fx:id="billPreview" styleClass="bill-preview" minWidth="500" spacing="0">
+                <!-- Header -->
+                <VBox alignment="CENTER" styleClass="bill-header" spacing="5">
+                    <Label text="SMVDU MESS BILL" styleClass="bill-title"/>
+                    <Label fx:id="hostelNameLabel" styleClass="bill-hostel"/>
+                </VBox>
+                
+                <!-- Bill Details -->
+                <VBox spacing="15" styleClass="bill-body">
+                    <padding><Insets top="25" right="30" bottom="25" left="30"/></padding>
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Total Students:" minWidth="200"/>
+                        <Label fx:id="totalStudentsLabel" text="0" styleClass="bill-value"/>
+                    </HBox>
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Total Mess Days:" minWidth="200"/>
+                        <Label fx:id="totalMessDaysLabel" text="0" styleClass="bill-value"/>
+                    </HBox>
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Per Day Rate:" minWidth="200"/>
+                        <Label fx:id="perDayRateLabel" text="₹0" styleClass="bill-value"/>
+                    </HBox>
+                    
+                    <Separator/>
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Subtotal:" minWidth="200"/>
+                        <Label fx:id="subtotalLabel" text="₹0" styleClass="bill-value"/>
+                    </HBox>
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="GST:" minWidth="200"/>
+                        <HBox spacing="10">
+                            <Label fx:id="gstPercentLabel" text="5%"/>
+                            <Label fx:id="gstAmountLabel" text="₹0" styleClass="bill-value"/>
+                        </HBox>
+                    </HBox>
+                    
+                    <Separator styleClass="thick-separator"/>
+                    
+                    <HBox alignment="CENTER_LEFT" styleClass="total-row">
+                        <Label text="TOTAL AMOUNT:" minWidth="200" styleClass="total-label"/>
+                        <Label fx:id="totalAmountLabel" text="₹0" styleClass="total-value"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- Actions -->
+                <HBox spacing="15" alignment="CENTER" styleClass="bill-actions">
+                    <Button text="💾 Save Bill" onAction="#saveBill" styleClass="save-button"/>
+                    <Button text="🖨️ Print" onAction="#printBill" styleClass="print-button"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>
