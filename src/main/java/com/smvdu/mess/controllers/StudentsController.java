@@ -14,6 +14,7 @@ import com.smvdu.mess.utils.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -46,12 +47,17 @@ public class StudentsController {
     @FXML
     public void initialize() {
         hostelId = SessionManager.getCurrentHostelId();
-        hostelLabel.setText(SessionManager.getCurrentUser().getHostelName());
+        
+        // Display mess name
+        if (SessionManager.getCurrentUser().getMessName() != null) {
+            hostelLabel.setText(SessionManager.getCurrentUser().getMessName());
+        } else {
+            hostelLabel.setText(SessionManager.getCurrentUser().getHostelName());
+        }
         
         setupTable();
         loadStudents();
         
-        // Search functionality
         searchField.textProperty().addListener((obs, old, newVal) -> filterStudents(newVal));
     }
     
@@ -62,9 +68,9 @@ public class StudentsController {
         messDaysCol.setCellValueFactory(new PropertyValueFactory<>("messDays"));
         absentDaysCol.setCellValueFactory(new PropertyValueFactory<>("absentDays"));
         
-        // Action column with Edit button
         actionCol.setCellFactory(col -> new TableCell<>() {
             private final Button editBtn = new Button("Edit");
+            
             {
                 editBtn.getStyleClass().add("edit-button");
                 editBtn.setOnAction(e -> {
@@ -84,51 +90,70 @@ public class StudentsController {
     }
     
     private void loadStudents() {
-        studentsList.clear();
-        LocalDate now = LocalDate.now();
-        int daysInMonth = now.lengthOfMonth();
+    studentsList.clear();
+    LocalDate now = LocalDate.now();
+    int daysInMonth = now.lengthOfMonth();
+    
+    try {
+        Connection conn = DatabaseConnection.getConnection();
         
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("""
-                SELECT s.*, 
-                    COALESCE(sa.mess_days, ?) as mess_days,
-                    COALESCE(sa.absent_days, 0) as absent_days
-                FROM students s
-                LEFT JOIN student_attendance sa ON s.id = sa.student_id 
-                    AND sa.month = ? AND sa.year = ?
-                WHERE s.hostel_id = ? AND s.is_active = 1
-                ORDER BY s.entry_number
-            """);
-            pstmt.setInt(1, daysInMonth);
-            pstmt.setInt(2, now.getMonthValue());
-            pstmt.setInt(3, now.getYear());
-            pstmt.setInt(4, hostelId);
-            
-            ResultSet rs = pstmt.executeQuery();
-            
-            while (rs.next()) {
-                Student student = new Student(
-                    rs.getInt("id"),
-                    rs.getString("entry_number"),
-                    rs.getString("name"),
-                    rs.getInt("hostel_id"),
-                    rs.getString("room_number"),
-                    rs.getString("phone"),
-                    rs.getString("email"),
-                    rs.getInt("is_active") == 1
-                );
-                student.setMessDays(rs.getInt("mess_days"));
-                student.setAbsentDays(rs.getInt("absent_days"));
-                studentsList.add(student);
-            }
-            
-            totalLabel.setText("Total: " + studentsList.size() + " students");
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Get mess_id for current hostel
+        PreparedStatement pstmt = conn.prepareStatement("SELECT mess_id FROM hostels WHERE id = ?");
+        pstmt.setInt(1, hostelId);
+        ResultSet rs = pstmt.executeQuery();
+        int messId = rs.next() ? rs.getInt("mess_id") : hostelId;
+        
+        // Get all hostel IDs that share this mess
+        pstmt = conn.prepareStatement("SELECT id FROM hostels WHERE mess_id = ?");
+        pstmt.setInt(1, messId);
+        rs = pstmt.executeQuery();
+        
+        StringBuilder hostelIds = new StringBuilder();
+        while (rs.next()) {
+            if (hostelIds.length() > 0) hostelIds.append(",");
+            hostelIds.append(rs.getInt("id"));
         }
+        
+        // Load students from ALL hostels in this mess
+        String studentQuery = "SELECT s.*, " +
+                             "COALESCE(sa.mess_days, ?) as mess_days, " +
+                             "COALESCE(sa.absent_days, 0) as absent_days " +
+                             "FROM students s " +
+                             "LEFT JOIN student_attendance sa ON s.id = sa.student_id " +
+                             "AND sa.month = ? AND sa.year = ? " +
+                             "WHERE s.hostel_id IN (" + hostelIds + ") AND s.is_active = 1 " +
+                             "ORDER BY s.entry_number";
+        
+        pstmt = conn.prepareStatement(studentQuery);
+        pstmt.setInt(1, daysInMonth);
+        pstmt.setInt(2, now.getMonthValue());
+        pstmt.setInt(3, now.getYear());
+        
+        rs = pstmt.executeQuery();
+        
+        while (rs.next()) {
+            Student student = new Student(
+                rs.getInt("id"),
+                rs.getString("entry_number"),
+                rs.getString("name"),
+                rs.getInt("hostel_id"),
+                rs.getString("room_number"),
+                rs.getString("phone"),
+                rs.getString("email"),
+                rs.getInt("is_active") == 1
+            );
+            student.setMessDays(rs.getInt("mess_days"));
+            student.setAbsentDays(rs.getInt("absent_days"));
+            studentsList.add(student);
+        }
+        
+        totalLabel.setText("Total: " + studentsList.size() + " students");
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
+
     
     private void filterStudents(String searchText) {
         if (searchText == null || searchText.isEmpty()) {
@@ -153,7 +178,7 @@ public class StudentsController {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new javafx.geometry.Insets(20));
+        grid.setPadding(new Insets(20));
         
         Spinner<Integer> absentSpinner = new Spinner<>(0, daysInMonth, student.getAbsentDays());
         absentSpinner.setEditable(true);
@@ -185,35 +210,61 @@ public class StudentsController {
     }
     
     private void updateStudentAttendance(int studentId, int messDays, int absentDays) {
-        LocalDate now = LocalDate.now();
+    LocalDate now = LocalDate.now();
+    
+    try {
+        Connection conn = DatabaseConnection.getConnection();
         
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("""
-                INSERT INTO student_attendance (student_id, month, year, total_days, mess_days, absent_days)
-                VALUES (?, ?, ?, ?, ?, ?)
-                ON CONFLICT(student_id, month, year) 
-                DO UPDATE SET mess_days = ?, absent_days = ?, updated_at = CURRENT_TIMESTAMP
-            """);
-            
+        // First, check if record exists
+        PreparedStatement checkStmt = conn.prepareStatement(
+            "SELECT id FROM student_attendance WHERE student_id = ? AND month = ? AND year = ?"
+        );
+        checkStmt.setInt(1, studentId);
+        checkStmt.setInt(2, now.getMonthValue());
+        checkStmt.setInt(3, now.getYear());
+        ResultSet rs = checkStmt.executeQuery();
+        
+        PreparedStatement pstmt;
+        
+        if (rs.next()) {
+            // Record exists - UPDATE
+            String updateQuery = "UPDATE student_attendance " +
+                               "SET mess_days = ?, absent_days = ?, updated_at = CURRENT_TIMESTAMP " +
+                               "WHERE student_id = ? AND month = ? AND year = ?";
+            pstmt = conn.prepareStatement(updateQuery);
+            pstmt.setInt(1, messDays);
+            pstmt.setInt(2, absentDays);
+            pstmt.setInt(3, studentId);
+            pstmt.setInt(4, now.getMonthValue());
+            pstmt.setInt(5, now.getYear());
+        } else {
+            // Record doesn't exist - INSERT
+            String insertQuery = "INSERT INTO student_attendance " +
+                               "(student_id, month, year, total_days, mess_days, absent_days) " +
+                               "VALUES (?, ?, ?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(insertQuery);
             pstmt.setInt(1, studentId);
             pstmt.setInt(2, now.getMonthValue());
             pstmt.setInt(3, now.getYear());
             pstmt.setInt(4, now.lengthOfMonth());
             pstmt.setInt(5, messDays);
             pstmt.setInt(6, absentDays);
-            pstmt.setInt(7, messDays);
-            pstmt.setInt(8, absentDays);
-            
-            pstmt.executeUpdate();
-            
-            showAlert("Success", "Attendance updated successfully!", Alert.AlertType.INFORMATION);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to update attendance", Alert.AlertType.ERROR);
         }
+        
+        int rowsAffected = pstmt.executeUpdate();
+        
+        if (rowsAffected > 0) {
+            showAlert("Success", "Attendance updated successfully!", Alert.AlertType.INFORMATION);
+        } else {
+            showAlert("Error", "No rows were updated", Alert.AlertType.ERROR);
+        }
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        showAlert("Error", "Failed to update attendance: " + e.getMessage(), Alert.AlertType.ERROR);
     }
+}
+
     
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);

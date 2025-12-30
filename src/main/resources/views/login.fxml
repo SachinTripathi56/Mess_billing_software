@@ -38,6 +38,6 @@
         </VBox>
         
         <!-- Footer -->
-        <Label text="© 2024 SMVDU. All rights reserved." styleClass="footer-text"/>
+        <Label text="© 2025 SMVDU. All rights reserved." styleClass="footer-text"/>
     </VBox>
 </StackPane>

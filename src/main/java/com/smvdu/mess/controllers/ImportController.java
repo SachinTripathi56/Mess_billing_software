@@ -1,30 +1,29 @@
 package com.smvdu.mess.controllers;
 
-import com.smvdu.mess.App;
-import com.smvdu.mess.database.DatabaseConnection;
-import com.smvdu.mess.utils.SessionManager;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
-
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ProgressBar;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
-import java.sql.*;
+import com.smvdu.mess.App;
+import com.smvdu.mess.database.DatabaseConnection;
+import com.smvdu.mess.utils.SessionManager;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
 
 public class ImportController {
     
@@ -111,6 +110,7 @@ public class ImportController {
                 if (entryNumber.isEmpty() || name.isEmpty()) {
                     log("Skipping row " + i + ": Missing entry number or name");
                     errors++;
+
                     continue;
                 }
                 

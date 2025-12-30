@@ -47,7 +47,7 @@
                 </VBox>
                 
                 <VBox styleClass="stat-card" alignment="CENTER" spacing="10" minWidth="200">
-                    <Label text="Total Mess Days" styleClass="stat-label"/>
+                    <Label text="Total Days" styleClass="stat-label"/>
                     <Label fx:id="totalMessDaysLabel" text="0" styleClass="stat-value"/>
                 </VBox>
                 

@@ -1,112 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.smvdu.mess.controllers.BillingController"
-            styleClass="page-bg">
+            style="-fx-background-color: #f5f5f5;"
+            prefHeight="900" prefWidth="1400">
     
+    <!-- Top Bar -->
     <top>
-        <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
-            <padding><Insets top="15" right="30" bottom="15" left="30"/></padding>
-            
-            <Button text="← Back" onAction="#goBack" styleClass="back-button"/>
-            <Label text="Generate Bill" styleClass="page-title"/>
-            <Label fx:id="hostelNameLabel" styleClass="header-subtitle"/>
+        <HBox style="-fx-background-color: #1e3a5f; -fx-padding: 15;" alignment="CENTER_LEFT" spacing="20">
+            <Button text="← Back" onAction="#goBack" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 13px; -fx-cursor: hand;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Billing Management" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
         </HBox>
     </top>
     
     <center>
-        <HBox spacing="40" alignment="TOP_CENTER">
-            <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
+        <!-- Main container - NO ScrollPane -->
+        <HBox spacing="25" alignment="CENTER" style="-fx-padding: 25;">
             
-            <!-- Settings Panel -->
-            <VBox spacing="20" styleClass="settings-panel" minWidth="300">
-                <Label text="Bill Settings" styleClass="section-title"/>
+            <!-- Left Panel - Settings -->
+            <VBox spacing="15" prefWidth="320" maxHeight="750"
+                  style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                 
-                <VBox spacing="8">
-                    <Label text="Select Month"/>
-                    <ComboBox fx:id="monthCombo" maxWidth="Infinity"/>
+                <Label text="Bill Settings" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                
+                <Separator prefHeight="1"/>
+                
+                <!-- Month Selection -->
+                <VBox spacing="5">
+                    <Label text="Select Month" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+                    <ComboBox fx:id="monthCombo" prefWidth="280"/>
                 </VBox>
                 
-                <VBox spacing="8">
-                    <Label text="Select Year"/>
-                    <ComboBox fx:id="yearCombo" maxWidth="Infinity"/>
+                <!-- Year Selection -->
+                <VBox spacing="5">
+                    <Label text="Select Year" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+                    <ComboBox fx:id="yearCombo" prefWidth="280"/>
                 </VBox>
                 
-                <Separator/>
+                <Separator prefHeight="1"/>
                 
-                <VBox spacing="8">
-                    <Label text="Per Day Rate (₹)"/>
+                <!-- Date Range Selection -->
+                <Label text="Billing Period" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                
+                <VBox spacing="5">
+                    <Label text="Start Date" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+                    <DatePicker fx:id="startDatePicker" prefWidth="280"/>
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label text="End Date" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+                    <DatePicker fx:id="endDatePicker" prefWidth="280"/>
+                </VBox>
+                
+                <Separator prefHeight="1"/>
+                
+                <!-- Rate Settings -->
+                <Label text="Rate Settings" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                
+                <VBox spacing="5">
+                    <Label text="Per Day Rate (₹)" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
                     <TextField fx:id="rateField" promptText="120"/>
                 </VBox>
                 
-                <VBox spacing="8">
-                    <Label text="GST Percentage (%)"/>
-                    <TextField fx:id="gstField" promptText="5"/>
+                <VBox spacing="5">
+                    <Label text="GST Percentage (%)" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+                    <TextField fx:id="gstField" promptText="5.0"/>
                 </VBox>
                 
-                <Button text="Generate Bill" onAction="#generateBill" 
-                        styleClass="primary-button" maxWidth="Infinity"/>
+                <Button fx:id="updateRateButton" text="Update Rate &amp; GST" onAction="#updateRateAndGST"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10; -fx-cursor: hand; -fx-background-radius: 5;"/>
+                
             </VBox>
             
-            <!-- Bill Preview -->
-            <VBox fx:id="billPreview" styleClass="bill-preview" minWidth="500" spacing="0">
+            <!-- Right Panel - Bill Preview -->
+            <VBox fx:id="billPreview" spacing="15" prefWidth="550" maxHeight="750"
+                  style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                
                 <!-- Header -->
-                <VBox alignment="CENTER" styleClass="bill-header" spacing="5">
-                    <Label text="SMVDU MESS BILL" styleClass="bill-title"/>
-                    <Label fx:id="hostelNameLabel" styleClass="bill-hostel"/>
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="SMVDU MESS BILL" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1e3a5f;"/>
+                    <Label fx:id="hostelNameLabel" text="Hostel Name" style="-fx-font-size: 17px; -fx-text-fill: #666;"/>
                 </VBox>
+                
+                <!-- Hostel Info Grid -->
+                <GridPane hgap="15" vgap="5" style="-fx-padding: 8 0;">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                    
+                    <Label text="Hostel Code:" style="-fx-font-size: 11px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="hostelCodeLabel" text="--" style="-fx-font-size: 11px;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    
+                    <Label text="Billing Period:" style="-fx-font-size: 11px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="billPeriodLabel" text="--" style="-fx-font-size: 11px;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    
+                    <Label text="Prepared By:" style="-fx-font-size: 11px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="preparedByLabel" text="--" style="-fx-font-size: 11px;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    
+                    <Label text="Generated:" style="-fx-font-size: 11px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <Label fx:id="generatedDateLabel" text="--" style="-fx-font-size: 11px;" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                </GridPane>
+                
+                <Separator style="-fx-border-width: 1; -fx-border-color: #ccc;"/>
                 
                 <!-- Bill Details -->
-                <VBox spacing="15" styleClass="bill-body">
-                    <padding><Insets top="25" right="30" bottom="25" left="30"/></padding>
+                <GridPane hgap="15" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="60"/>
+                        <ColumnConstraints percentWidth="40" halignment="RIGHT"/>
+                    </columnConstraints>
                     
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="Total Students:" minWidth="200"/>
-                        <Label fx:id="totalStudentsLabel" text="0" styleClass="bill-value"/>
-                    </HBox>
+                    <Label text="Days in Billing Period:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px;"/>
+                    <Label fx:id="daysInMonthLabel" text="30" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
                     
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="Total Mess Days:" minWidth="200"/>
-                        <Label fx:id="totalMessDaysLabel" text="0" styleClass="bill-value"/>
-                    </HBox>
+                    <Label text="Total Students:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           style="-fx-font-size: 12px;"/>
+                    <Label fx:id="totalStudentsLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
                     
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="Per Day Rate:" minWidth="200"/>
-                        <Label fx:id="perDayRateLabel" text="₹0" styleClass="bill-value"/>
-                    </HBox>
+                    <Label text="Total Student-Days:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                           style="-fx-font-size: 12px;"/>
+                    <Label fx:id="totalStudentDaysLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
                     
-                    <Separator/>
+                    <Label text="Total Student Leave Days:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                           style="-fx-font-size: 12px; -fx-text-fill: #d32f2f;"/>
+                    <Label fx:id="totalAbsentDaysLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #d32f2f;"/>
                     
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="Subtotal:" minWidth="200"/>
-                        <Label fx:id="subtotalLabel" text="₹0" styleClass="bill-value"/>
-                    </HBox>
+                    <Label text="Net Mess Days:" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                           style="-fx-font-size: 12px; -fx-text-fill: #2e7d32;"/>
+                    <Label fx:id="totalMessDaysLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2e7d32;"/>
                     
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="GST:" minWidth="200"/>
-                        <HBox spacing="10">
-                            <Label fx:id="gstPercentLabel" text="5%"/>
-                            <Label fx:id="gstAmountLabel" text="₹0" styleClass="bill-value"/>
-                        </HBox>
-                    </HBox>
-                    
-                    <Separator styleClass="thick-separator"/>
-                    
-                    <HBox alignment="CENTER_LEFT" styleClass="total-row">
-                        <Label text="TOTAL AMOUNT:" minWidth="200" styleClass="total-label"/>
-                        <Label fx:id="totalAmountLabel" text="₹0" styleClass="total-value"/>
-                    </HBox>
-                </VBox>
+                    <Label text="Per Day Rate:" GridPane.columnIndex="0" GridPane.rowIndex="5"
+                           style="-fx-font-size: 12px;"/>
+                    <Label fx:id="perDayRateLabel" text="₹120.00" GridPane.columnIndex="1" GridPane.rowIndex="5"
+                           style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+                </GridPane>
                 
-                <!-- Actions -->
-                <HBox spacing="15" alignment="CENTER" styleClass="bill-actions">
-                    <Button text="💾 Save Bill" onAction="#saveBill" styleClass="save-button"/>
-                    <Button text="🖨️ Print" onAction="#printBill" styleClass="print-button"/>
+                <Separator prefHeight="1"/>
+                
+                <!-- Financial Summary -->
+                <GridPane hgap="15" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="60"/>
+                        <ColumnConstraints percentWidth="40" halignment="RIGHT"/>
+                    </columnConstraints>
+                    
+                    <Label text="Subtotal:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           style="-fx-font-size: 14px;"/>
+                    <Label fx:id="subtotalLabel" text="₹0.00" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    
+                    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="8">
+                        <Label text="GST:" style="-fx-font-size: 14px;"/>
+                        <Label fx:id="gstPercentLabel" text="5.0%" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
+                    </HBox>
+                    <Label fx:id="gstAmountLabel" text="₹0.00" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                </GridPane>
+                
+                <Separator style="-fx-border-width: 2; -fx-border-color: #1e3a5f;"/>
+                
+                <!-- Total Amount -->
+                <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 8 0;">
+                    <Label text="TOTAL AMOUNT:" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                    <Label fx:id="totalAmountLabel" text="₹0.00" 
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2e7d32;"/>
                 </HBox>
+                
+                <Separator prefHeight="1"/>
+                
+                <!-- Action Buttons - ONLY Export PDF and Print -->
+                <HBox spacing="12" alignment="CENTER" style="-fx-padding: 10 0 5 0;">
+                    <Button text="📄 Export PDF" onAction="#exportToPDF"
+                            style="-fx-background-color: #FF6F00; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 25; -fx-cursor: hand; -fx-background-radius: 5;"/>
+                    <Button text="🖨 Print" onAction="#printBill"
+                            style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 25; -fx-cursor: hand; -fx-background-radius: 5;"/>
+                </HBox>
+                
             </VBox>
+            
         </HBox>
     </center>
+    
 </BorderPane>
