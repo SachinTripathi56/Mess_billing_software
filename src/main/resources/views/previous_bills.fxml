@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.smvdu.mess.controllers.PreviousBillsController"
+      spacing="20" style="-fx-background-color: #f5f5f5;">
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: white; -fx-padding: 20;">
+        <Button text="← Back" onAction="#goBack" styleClass="back-button"/>
+        
+        <VBox spacing="5">
+            <Label text="Previous Bills" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Label fx:id="hostelLabel" text="Mess Name" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
+        </VBox>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+    </HBox>
+    
+    <!-- Bills Container -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" 
+                style="-fx-background: transparent; -fx-background-color: transparent;">
+        <FlowPane fx:id="billsContainer" hgap="20" vgap="20" 
+                  style="-fx-padding: 20; -fx-background-color: transparent;"/>
+    </ScrollPane>
+</VBox>

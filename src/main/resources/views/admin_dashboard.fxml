@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smvdu.mess.controllers.AdminDashboardController"
+            styleClass="dashboard-bg">
+
+    <!-- ===== HEADER ===== -->
+    <top>
+        <VBox>
+
+            <!-- MAIN HEADER BAR -->
+            <HBox styleClass="app-header"
+                  alignment="CENTER_LEFT"
+                  spacing="14">
+
+                <padding>
+                    <Insets top="10" right="22" bottom="10" left="20"/>
+                </padding>
+
+                <!-- LOGO -->
+                <ImageView fitWidth="52" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/smvdu.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- TITLES -->
+                <VBox spacing="2">
+                    <Label text="Shri Mata Vaishno Devi University"
+                           styleClass="header-title"/>
+                    <Label text="Admin – Mess Billing System"
+                           styleClass="header-subtitle"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- ADMIN INFO (kept from your logic) -->
+                <VBox alignment="CENTER_RIGHT">
+                    <Label fx:id="adminNameLabel"
+                           styleClass="welcome-text"/>
+                    <Label fx:id="designationLabel"
+                           style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
+                </VBox>
+
+                <Button text="Logout"
+                        onAction="#handleLogout"
+                        styleClass="logout-button"/>
+            </HBox>
+
+            <!-- SECOND ROW – kept functionality -->
+            <HBox style="-fx-background-color: white; -fx-padding: 12 22;
+                         -fx-border-color: #e5e5e5; -fx-border-width: 0 0 1 0;"
+                  alignment="CENTER_LEFT">
+
+                <Label text="All Hostels Overview"
+                       style="-fx-font-size: 17px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #333;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Current Month Bills"
+                       style="-fx-font-size: 13px; -fx-text-fill: #666;"/>
+            </HBox>
+
+        </VBox>
+    </top>
+
+    <!-- ===== MAIN CONTENT (UNCHANGED LOGIC) ===== -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background-color: transparent;
+                           -fx-background: transparent;">
+
+            <VBox alignment="TOP_CENTER"
+                  spacing="20"
+                  style="-fx-padding: 30;">
+
+                <FlowPane fx:id="hostelsContainer"
+                          hgap="25" vgap="25"
+                          alignment="CENTER"
+                          prefWrapLength="1200"/>
+            </VBox>
+
+        </ScrollPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,228 @@
+/* ============================================
+   SMVDU MESS BILLING SYSTEM - STYLES
+   ============================================ */
+
+/* ---------- Variables / Root ---------- */
+* {
+    -fx-primary: #1a365d;
+    -fx-primary-light: #2c5282;
+    -fx-primary-dark: #0d1f3c;
+    -fx-accent: #3182ce;
+    -fx-accent-light: #63b3ed;
+    -fx-success: #38a169;
+    -fx-warning: #d69e2e;
+    -fx-danger: #e53e3e;
+    -fx-bg-light: #f7fafc;
+    -fx-bg-dark: #edf2f7;
+    -fx-text-primary: #1a202c;
+    -fx-text-secondary: #718096;
+    -fx-border: #e2e8f0;
+    -fx-white: #ffffff;
+}
+
+/* ---------- Dashboard ---------- */
+.dashboard-bg {
+    -fx-background-color: #f7fafc;
+}
+
+/* ===== NEW UNIFIED HEADER ===== */
+.app-header {
+    -fx-background-color: white;
+    -fx-border-color: #e5e5e5;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #3182ce;
+    -fx-font-weight: bold;
+}
+
+.welcome-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4a5568;
+}
+
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e53e3e;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-border-color: #e53e3e;
+    -fx-border-radius: 5;
+    -fx-padding: 8 15;
+}
+
+.logout-button:hover {
+    -fx-background-color: #e53e3e;
+    -fx-text-fill: white;
+}
+
+/* ---------- Stats Cards ---------- */
+.stat-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 5);
+}
+
+.stat-card-highlight {
+    -fx-background-color: linear-gradient(to bottom right, #1a365d, #2c5282);
+    -fx-background-radius: 15;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(26,54,93,0.3), 20, 0, 0, 8);
+}
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #718096;
+    -fx-font-weight: bold;
+}
+
+.stat-card-highlight .stat-label {
+    -fx-text-fill: rgba(255,255,255,0.8);
+}
+
+.stat-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.stat-value-small {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.stat-value-highlight {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+/* ---------- Action Cards ---------- */
+.action-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-padding: 35 50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 5);
+    -fx-cursor: hand;
+    -fx-min-width: 250;
+}
+
+.action-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(49,130,206,0.3), 25, 0, 0, 8);
+    -fx-translate-y: -5;
+}
+
+.action-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.action-desc {
+    -fx-font-size: 13px;
+    -fx-text-fill: #718096;
+}
+
+/* ---------- Page Styles ---------- */
+.page-bg {
+    -fx-background-color: #f7fafc;
+}
+
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4a5568;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-text-fill: #1a365d;
+}
+
+/* ---------- Table Styles ---------- */
+.students-table {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+}
+
+.students-table .column-header {
+    -fx-background-color: #edf2f7;
+    -fx-padding: 12;
+    -fx-font-weight: bold;
+}
+
+.students-table .table-row-cell {
+    -fx-padding: 10;
+    -fx-border-color: #f0f0f0;
+}
+
+.students-table .table-row-cell:hover {
+    -fx-background-color: #f7fafc;
+}
+
+/* ---------- Bill Preview ---------- */
+.settings-panel {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-padding: 25;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+}
+
+.bill-preview {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+}
+
+.bill-header {
+    -fx-background-color: #1a365d;
+    -fx-background-radius: 15 15 0 0;
+    -fx-padding: 25;
+}
+
+.bill-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+/* ---------- Import Page ---------- */
+.info-card {
+    -fx-background-color: #ebf8ff;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+}
+
+.secondary-button {
+    -fx-background-color: #edf2f7;
+    -fx-text-fill: #1a365d;
+    -fx-padding: 12 25;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3182ce;
+    -fx-underline: true;
+}

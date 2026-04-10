@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smvdu.mess.controllers.StudentsController"
+            styleClass="dashboard-bg">
+
+    <!-- Header -->
+    <top>
+        <HBox styleClass="app-header" alignment="CENTER_LEFT" spacing="14">
+            <padding>
+                <Insets top="10" right="22" bottom="10" left="20"/>
+            </padding>
+
+            <Button text="← Back" onAction="#goBack" styleClass="back-button"/>
+
+            <ImageView fitWidth="48" preserveRatio="true">
+                <image>
+                    <Image url="@/images/smvdu.png"/>
+                </image>
+            </ImageView>
+
+            <VBox spacing="2">
+                <Label text="Shri Mata Vaishno Devi University" styleClass="header-title"/>
+                <Label text="Student Details" styleClass="header-subtitle"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="hostelLabel" text="Mess Name" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+            
+            <Label fx:id="totalLabel" text="Total: 0 students" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            
+            <Button fx:id="printButton" text="📄 Print Report" onAction="#handlePrint" 
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+            
+            <!-- ✅ SINGLE Search & Filter Bar (removed duplicate) -->
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5;">
+                <Label text="🔍" style="-fx-font-size: 18px;"/>
+                <TextField fx:id="searchField" promptText="Search by name or entry number..." prefWidth="400"/>
+                
+                <Label text="Batch:" style="-fx-font-weight: bold; -fx-padding: 0 0 0 30;"/>
+                <ComboBox fx:id="batchFilterCombo" prefWidth="150"/>
+            </HBox>
+
+            <!-- Students Table -->
+            <TableView fx:id="studentsTable" VBox.vgrow="ALWAYS" 
+                       style="-fx-background-color: white; -fx-background-radius: 5;">
+                <columns>
+                    <TableColumn fx:id="entryNumberCol" text="Entry Number" prefWidth="150"/>
+                    <TableColumn fx:id="nameCol" text="Name" prefWidth="250"/>
+                    <TableColumn fx:id="roomCol" text="Room" prefWidth="120"/>
+                    <TableColumn fx:id="messDaysCol" text="Mess Days" prefWidth="100"/>
+                    <TableColumn fx:id="absentDaysCol" text="Absent Days" prefWidth="100"/>
+                    <TableColumn fx:id="actionCol" text="Action" prefWidth="150"/>
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>

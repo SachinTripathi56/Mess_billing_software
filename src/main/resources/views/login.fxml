@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.smvdu.mess.controllers.LoginController"
+           stylesheets="@/css/login.css">
+
+    <!-- Full screen background -->
+    <StackPane styleClass="background-pane">
+
+        <!-- Center wrapper to stop stretching -->
+        <VBox alignment="CENTER">
+
+            <!-- Glass card -->
+            <VBox alignment="CENTER"
+                  spacing="14"
+                  maxWidth="360"
+                  styleClass="glass-card">
+
+                <padding>
+                    <Insets top="28" right="28" bottom="28" left="28"/>
+                </padding>
+
+                <!-- LOGO -->
+                <ImageView fitWidth="100" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/smvdu.png"/>
+                    </image>
+                </ImageView>
+
+
+                <Label text="Mess Billing System" styleClass="title"/>
+
+                <!-- FORM -->
+                <VBox spacing="10" maxWidth="300">
+
+                    <VBox spacing="3">
+                        <Label text="Email" styleClass="field-label"/>
+                        <TextField fx:id="emailField"
+                                   promptText="Enter email"
+                                   styleClass="input"/>
+                    </VBox>
+
+                    <VBox spacing="3">
+                        <Label text="Password" styleClass="field-label"/>
+                        <PasswordField fx:id="passwordField"
+                                       promptText="Enter password"
+                                       styleClass="input"/>
+                    </VBox>
+
+                    <!-- Add this after the password field in your login.fxml -->
+<Hyperlink fx:id="forgotPasswordLink" 
+           text="Forgot Password?" 
+           onAction="#handleForgotPassword"
+           style="-fx-font-size: 12px; -fx-text-fill: #2196F3; -fx-padding: 5 0 15 0;"/>
+
+                    <Label fx:id="errorLabel" styleClass="error"/>
+
+                    <Button text="Login"
+                            onAction="#handleLogin"
+                            maxWidth="Infinity"
+                            styleClass="login-btn"/>
+                </VBox>
+
+            </VBox>
+        </VBox>
+
+    </StackPane>
+
+</StackPane>
