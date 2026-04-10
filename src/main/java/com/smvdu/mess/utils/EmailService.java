@@ -7,11 +7,11 @@ import java.net.URI;
 public class EmailService {
 
     // 🔥 Replace with your REAL Brevo API key (must start with xkeysib-)
- private static final String API_KEY = null; // enter your api url
+ //private static final String API_KEY = ""; // enter your api url
 
 
     // ✅ Your VERIFIED sender email
-    private static final String SENDER_EMAIL = null; // enter your sender email.
+    private static final String SENDER_EMAIL = "heapifyglobal@gmail.com"; // enter your sender email.
 
     /**
      * Send OTP email using Brevo API (HTTP)

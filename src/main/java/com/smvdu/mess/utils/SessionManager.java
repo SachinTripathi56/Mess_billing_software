@@ -13,7 +13,11 @@ public class SessionManager {
         return currentUser;
     }
     
-    public static void logout() {
+       public static void logout() {
+        if (currentUser != null) {
+            // Release the session lock in MySQL
+            NetworkSessionManager.releaseSession(currentUser.getEmail());
+        }
         currentUser = null;
     }
     

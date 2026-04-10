@@ -61,7 +61,10 @@
 
                     <Label fx:id="errorLabel" styleClass="error"/>
 
-                    <Button text="Login"
+                    <Label fx:id="statusLabel" text="" visible="false"
+       style="-fx-text-fill: #2196F3; -fx-font-size: 12px;"/>
+
+                    <Button fx:id="loginButton" text="Login"
                             onAction="#handleLogin"
                             maxWidth="Infinity"
                             styleClass="login-btn"/>

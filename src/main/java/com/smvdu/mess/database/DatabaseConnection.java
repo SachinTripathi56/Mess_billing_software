@@ -24,8 +24,8 @@ public class DatabaseConnection {
     "&maxReconnects=1" +        // only retry once instead of 3 times
     "&autoReconnect=false";     // don't auto reconnect — we handle it manually
 
-    private static final String MYSQL_USER     =null;  // enter ur aws user name
-    private static final String MYSQL_PASSWORD = null;  // enter your password
+    private static final String MYSQL_USER     ="admin";  // enter ur aws user name
+    private static final String MYSQL_PASSWORD = "Smvdu101712";  // enter your password
 
     // ================= CONNECTION STATE =================
     // SQLite is ALWAYS the main connection used by the app
